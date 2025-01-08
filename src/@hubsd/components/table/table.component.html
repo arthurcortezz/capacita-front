@@ -1,0 +1,257 @@
+<div
+  class="bg-card rounded-md border dark:border-slate-800 min-w-fit"
+  *ngIf="listable"
+>
+  <div class="p-3 px-4 border-b">
+    <div class="flex flex-row justify-between items-center">
+      <div class="w-full flex flex-row justify-between">
+        <h2 class="font-bold text-lg py-1">{{ config.title }}</h2>
+        <div
+          class="flex flex-col md:flex-row items-center mr-0 md:mr-1/4"
+          *ngIf="this.config.orderBy"
+        >
+          <span class="mr-2 w-20 min-w-20">Filtrar por:</span>
+          <mat-select
+            class="min-w-40"
+            placeholder="Status da análise"
+            (selectionChange)="onChangeStatus($event)"
+          >
+            <mat-option [value]="null">Limpar filtro</mat-option>
+            <mat-option value="PENDENTE">Pendente</mat-option>
+            <mat-option value="APROVADA">Aprovada</mat-option>
+            <mat-option value="REPROVADA">Reprovada</mat-option>
+            <mat-option value="CRIAÇÃO">Criação</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <button
+        (click)="navigateUrl()"
+        mat-button
+        color="primary"
+        *ngIf="config.showMore"
+      >
+        <span class="ml-1 font-bold">Ver tudo</span>
+        <mat-icon
+          iconPositionEnd
+          [svgIcon]="'mat_outline:chevron_right'"
+        ></mat-icon>
+      </button>
+      <button mat-button color="warn" *ngIf="selection.hasValue()">
+        <mat-icon [svgIcon]="'mat_outline:delete'"></mat-icon>
+        <span class="ml-1">Remover selecionados</span>
+      </button>
+    </div>
+    <div *ngIf="config.searchable">
+      <mat-form-field class="flex -mb-5 w-52 pt-2">
+        <mat-icon [svgIcon]="'mat_outline:search'" matPrefix></mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="Pesquisar..."
+          [(ngModel)]="filterValue"
+          (ngModelChange)="applyFilter()"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <table
+    aria-describedby="tabela"
+    matSort
+    (matSortChange)="sortData($event)"
+    [ngClass]="config.paginator && 'table-paginator'"
+    class="m-0 p-0 w-full"
+  >
+    <thead>
+      <tr>
+        <th
+          *ngIf="config.selection"
+          class="w-4 text-center flex items-center pl-2"
+        >
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            color="primary"
+          ></mat-checkbox>
+        </th>
+        <th
+          class="border border-t-0 text-low-light py-2.5 px-4"
+          [mat-sort-header]="item.key"
+          *ngFor="let item of config.headers; let i = index"
+        >
+          {{ item.name }}
+        </th>
+        <th class="text-low-light text-left px-4 w-4" *ngIf="config.actions">
+          Ações
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-transparent">
+      <tr
+        class="hover:bg-default items-center justify-center"
+        *ngFor="let value of dataSource; index as indexValue"
+      >
+        <td
+          class="border border-l-1 text-center pl-2 w-full custom:w-4 custom:border-l-0"
+          *ngIf="config.selection"
+        >
+          <div class="flex items-center">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              [checked]="selection.isSelected(value.id)"
+              (change)="
+                selection.toggle(value.id); selected.emit(selection.selected)
+              "
+              color="primary"
+            ></mat-checkbox>
+          </div>
+        </td>
+        <td
+          *ngFor="let item of config.content; index as indexItem"
+          [class.py-4]="item?.type !== 'timestamp'"
+          [class.py-2]="item?.type === 'timestamp'"
+          class="border px-4 text-md text-left"
+        >
+          <div class="flex flex-row">
+            <div
+              class="flex custom:hidden"
+              *ngFor="
+                let itemHeader of config.headers;
+                index as indexItemHeader
+              "
+            >
+              <p class="mr-4 w-16" *ngIf="itemHeader.key === item.key">
+                {{ itemHeader.name }}
+              </p>
+            </div>
+            <div
+              class="text-end custom:text-start flex flex-col w-full"
+              *ngIf="item.type === 'timestamp'"
+            >
+              {{
+                getByKeyValue(value, item.key, item.type).toLocaleDateString(
+                  "pt-br"
+                )
+              }}
+              <span class="text-sm">
+                Às
+                {{
+                  getByKeyValue(value, item.key, item.type).toLocaleTimeString(
+                    "pt-br"
+                  )
+                }}
+              </span>
+            </div>
+            <ng-container
+              *ngIf="
+                item.type === 'field' ||
+                item.type === 'length' ||
+                item.type === 'phoneNumber' ||
+                item.type === 'identificationNumber' ||
+                item.type === 'boolean'
+              "
+            >
+              <div class="text-end custom:text-start w-full">
+                <div class="flex w-full justify-end custom:justify-start">
+                  {{ getByKeyValue(value, item.key, item.type) }}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </td>
+        <td
+          id="acoes"
+          class="border px-4 text-md text-center"
+          *ngIf="config.actions"
+        >
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Mais informações"
+          >
+            <mat-icon [svgIcon]="'mat_solid:more_vert'"></mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button
+              mat-menu-item
+              *ngIf="editable"
+              (click)="actionListener.emit({ action: 'form', id: value.id })"
+            >
+              <mat-icon [svgIcon]="'mat_outline:edit'"></mat-icon>
+              <span>Editar</span>
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="deletable"
+              (click)="actionListener.emit({ action: 'delete', id: value.id })"
+            >
+              <mat-icon [svgIcon]="'mat_outline:delete'"></mat-icon>
+              <span>Remover</span>
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="this.config.view"
+              (click)="actionListener.emit({ action: 'observe', id: value.id })"
+            >
+              <mat-icon [svgIcon]="'uil:observe'"></mat-icon>
+              <span>Visualizar</span>
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="
+                this.config.changes &&
+                !this.config.allowChanges &&
+                this.changeStatusPermission
+              "
+              (click)="actionListener.emit({ action: 'approve', id: value.id })"
+            >
+              <mat-icon [svgIcon]="'uil:approve'"></mat-icon>
+              <span>Aprovar</span>
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="
+                this.config.changes &&
+                !this.config.allowChanges &&
+                this.changeStatusPermission
+              "
+              (click)="actionListener.emit({ action: 'reject', id: value.id })"
+            >
+              <mat-icon [svgIcon]="'uil:reject'"></mat-icon>
+              <span>Rejeitar</span>
+            </button>
+          </mat-menu>
+        </td>
+        <td class="border flex custom:hidden w-full" *ngIf="config.actions">
+          <button
+            class="justify-center"
+            mat-menu-item
+            *ngIf="editable"
+            (click)="actionListener.emit({ action: 'form', id: value.id })"
+          >
+            <mat-icon [svgIcon]="'mat_outline:edit'"></mat-icon>
+            <span>Editar</span>
+          </button>
+          <button
+            class="justify-center"
+            mat-menu-item
+            *ngIf="deletable"
+            (click)="actionListener.emit({ action: 'delete', id: value.id })"
+          >
+            <mat-icon [svgIcon]="'mat_outline:delete'"></mat-icon>
+            <span>Remover</span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="config.paginator" class="flex justify-end border-t">
+    <mat-paginator
+      class="bg-transparent"
+      [length]="dataSourceLength"
+      [pageSize]="defaultPageSize"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  </div>
+</div>

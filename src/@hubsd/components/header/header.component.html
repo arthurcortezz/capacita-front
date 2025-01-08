@@ -1,0 +1,105 @@
+<div *ngIf="info">
+  <div class="flex p-4">
+    <div
+      class="flex justify-center items-center ml-1 whitespace-nowrap"
+      *ngFor="let item of items; let last = last"
+    >
+      <a
+        [routerLink]="item.url"
+        [ngClass]="last && 'text-primary-dark font-bold'"
+        class="flex"
+        >{{ item.label }}</a
+      >
+      <span class="ml-1" *ngIf="!last">
+        <mat-icon
+          class="flex"
+          [ngClass]="last && 'text-primary-dark font-bold'"
+          [svgIcon]="'mat_outline:chevron_right'"
+        ></mat-icon>
+      </span>
+    </div>
+  </div>
+  <div class="w-full flex flex-col items-center pt-4">
+    <span class="text-lg"> Novo aplicativo </span>
+    <span class="text-md mb-4 max-w-100 text-center">
+      Abaixo estão as páginas clonadas por você. Escolha uma para visualizar ou
+      crie uma nova página.
+    </span>
+    <div
+      *ngIf="buttonActionTitle && creatable"
+      class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
+    >
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="actionListener.emit({ action: 'form', id: null })"
+      >
+        <mat-icon [svgIcon]="'mat_outline:add'"></mat-icon>
+        <span class="ml-1">{{ buttonActionTitle }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="!info"
+  class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-0 py-6 sm:px-6 dark:bg-transparent"
+>
+  <div class="flex-1 min-w-0">
+    <div>
+      <div class="flex flex-row justify-between items-center">
+        <div class="hidden sm:flex flex-wrap items-center font-medium">
+          <div
+            class="flex justify-center items-center ml-1 whitespace-nowrap"
+            *ngFor="let item of items; let last = last"
+          >
+            <a
+              [routerLink]="item.url"
+              [ngClass]="last && 'text-primary dark:text-white font-bold'"
+              class="flex"
+              >{{ item.label }}</a
+            >
+            <span class="ml-1" *ngIf="!last">
+              <mat-icon
+                class="flex"
+                [ngClass]="last && 'text-primary-dark font-bold'"
+                [svgIcon]="'mat_outline:chevron_right'"
+              ></mat-icon>
+            </span>
+          </div>
+        </div>
+        <div
+          *ngIf="buttonActionTitle && creatable"
+          class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
+        >
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="actionListener.emit({ action: 'form', id: null })"
+          >
+            <mat-icon [svgIcon]="'mat_outline:add'"></mat-icon>
+            <span class="ml-1">{{ buttonActionTitle }}</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex sm:hidden max-sm:ml-6 max-md:mr-6">
+        <a
+          class="inline-flex items-center -ml-1.5 md:ml-2 text-black dark:text-white font-medium"
+          [routerLink]="'./..'"
+        >
+          <mat-icon
+            class="text-black dark:text-white"
+            [svgIcon]="'mat_outline:chevron_left'"
+          ></mat-icon>
+          <span class="ml-1">Voltar</span>
+        </a>
+      </div>
+    </div>
+    <div class="ml-1 mt-2">
+      <h2
+        class="text-lg max-sm:text-md max-md:text-md md:text-lg font-semibold tracking-tight leading-7 sm:leading-10 truncate max-sm:ml-6 max-md:mr-6"
+      >
+        {{ title }}
+      </h2>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="hubsd-navigation">
+  <div class="hubsd-navigation-header">
+    <ng-content select="[hubsdNavigationHeader]"></ng-content>
+  </div>
+  <div class="hubsd-navigation-container">
+    <div class="hubsd-navigation-content">
+      <div
+        *ngFor="let item of navigation; trackBy: trackByFn"
+        [matTooltip]="hovered ? item.menu : ''"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!hovered"
+      >
+        <hubsd-navigation-item [item]="item" [hovered]="hovered"></hubsd-navigation-item>
+      </div>
+    </div>
+  </div>
+  <!-- <hubsd-navigation-switcher-mode
+    [hovered]="hovered"
+  ></hubsd-navigation-switcher-mode> -->
+</div>

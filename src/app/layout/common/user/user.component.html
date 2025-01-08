@@ -1,0 +1,22 @@
+<button mat-button class="py-8" [matMenuTriggerFor]="userActions">
+  <div class="flex flex-row items-center">
+    <button>
+      <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+    </button>
+    <span class="text-left ml-4 hidden md:block">
+      <h2 class="font-bold text-md text-white">{{ user.name }}</h2>
+      <p class="font-normal text-sm mt-1 text-white">{{ user.role.name }}</p>
+    </span>
+  </div>
+</button>
+
+<mat-menu class="mt-1" #userActions="matMenu">
+  <button mat-menu-item [routerLink]="['/minha-conta']">
+    <mat-icon [svgIcon]="'mat_outline:account_circle'"></mat-icon>
+    <span class="font-semibold">Minha conta</span>
+  </button>
+  <button mat-menu-item (click)="signOut()">
+    <mat-icon [svgIcon]="'mat_outline:logout'"></mat-icon>
+    <span class="font-semibold">Sair</span>
+  </button>
+</mat-menu>

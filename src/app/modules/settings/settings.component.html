@@ -1,0 +1,31 @@
+<div class="flex flex-col flex-auto min-w-0 w-full h-full">
+  <hubsd-header [title]="pagina?.label ?? 'Minha conta'"></hubsd-header>
+  <div
+    class="flex flex-col-reverse lg:flex-row px-6 pb-6 w-full justify-between"
+  >
+    <div class="w-full lg:w-full" *ngIf="pagina">
+      <account *ngIf="pagina?.value === 'account'"></account>
+      <security *ngIf="pagina?.value === 'security'"></security>
+    </div>
+    <div
+      class="bg-card rounded-md border dark:border-slate-800 px-8 py-2 flex flex-col mb-4 min-w-60 w-full lg:max lg:w-1/12 lg:ml-6 lg:mb-0"
+    >
+      <button
+        [ngClass]="{ 'text-primary': pagina?.value === 'account' }"
+        class="text-md font-semibold text-low-light flex flex-row justify-start px-2 py-5 rounded-md"
+        (click)="menuSelect('account')"
+      >
+        <mat-icon [svgIcon]="'uil:edit-sharp'"></mat-icon>
+        <span class="ml-4">Editar perfil</span>
+      </button>
+      <button
+        [ngClass]="{ 'text-primary': pagina?.value === 'security' }"
+        class="text-md font-semibold text-low-light flex flex-row justify-start px-2 py-5"
+        (click)="menuSelect('security')"
+      >
+        <mat-icon [svgIcon]="'uil:secure-outline'"></mat-icon>
+        <span class="ml-4">Segurança</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <hubsd-header
+    [title]="
+      id
+        ? 'Modificar um parâmetro de sistema existente'
+        : 'Criar um novo parâmetro de sistema'
+    "
+  ></hubsd-header>
+  <div class="px-6 pb-6 w-full xl:w-1/2">
+    <div class="bg-card rounded-md border dark:border-slate-800 p-4">
+      <form [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Chave</mat-label>
+          <input formControlName="key" matInput />
+          <mat-error *ngIf="form.get('key').hasError('required')">
+            A chave é obrigatório.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Valor</mat-label>
+          <input formControlName="value" matInput />
+          <mat-error *ngIf="form.get('value').hasError('required')">
+            O valor é obrigatório.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Descrição</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error *ngIf="form.get('description').hasError('required')">
+            A descrição é obrigatório.
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="flex flex-row gap-6">
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        [disabled]="form.disabled"
+        [routerLink]="'/parametros-de-sistema'"
+      >
+        Cancelar
+      </button>
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="handleSaveOrUpdate()"
+      >
+        <span *ngIf="!form.disabled">Salvar</span>
+        <mat-progress-spinner
+          *ngIf="form.disabled"
+          [diameter]="24"
+          [mode]="'indeterminate'"
+        ></mat-progress-spinner>
+      </button>
+    </div>
+  </div>
+</div>

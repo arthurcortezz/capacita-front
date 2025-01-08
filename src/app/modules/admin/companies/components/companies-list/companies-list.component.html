@@ -1,0 +1,30 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <div class="max-sm:hidden">
+    <hubsd-header
+      buttonActionTitle="Criar uma nova empresa"
+      (actionListener)="handleAction($event)"
+    ></hubsd-header>
+  </div>
+  <div
+    (click)="handleAction({ action: 'form' })"
+    class="m-auto p-8 max-sm:block hidden"
+  >
+    <button mat-flat-button class="bg-primary p-2">
+      <span class="ml-1 text-white">Criar uma nova empresa</span>
+    </button>
+  </div>
+  <div class="px-6 pb-6">
+    <hubsd-table
+      *ngIf="data"
+      class="w-full"
+      [config]="config"
+      [data]="data"
+      [selection]="selection"
+      (actionListener)="handleAction($event)"
+      (filtered)="getAll($event)"
+      (sortabled)="handleSort($event)"
+      (paginated)="handlePaginator($event)"
+    >
+    </hubsd-table>
+  </div>
+</div>

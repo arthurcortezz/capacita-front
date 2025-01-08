@@ -1,0 +1,7 @@
+<div class="flex flex-col-reverse justify-center items-end">
+  <canvas id="pieChart"></canvas>
+  <div class="flex justify-center items-center w-full" *ngIf="canvasIsLoaded">
+    <mat-icon class="text-current mr-4" [svgIcon]="icon"></mat-icon>
+    <h1 class="font-bold text-lg">{{ title }}</h1>
+  </div>
+</div>

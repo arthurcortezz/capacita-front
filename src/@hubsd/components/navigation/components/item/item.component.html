@@ -1,0 +1,28 @@
+<a
+  class="hubsd-navigation-item-wrapper dark:bg-zinc-900 bg-zinc-100 rounded-2xl"
+  [routerLink]="[item.route]"
+  [routerLinkActive]="'hubsd-navigation-item-active'"
+>
+  <ng-container>
+    <a class="hubsd-navigation-item">
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </a>
+  </ng-container>
+</a>
+
+<ng-template #itemTemplate>
+  <ng-container *ngIf="item.icon">
+    <mat-icon
+      class="hubsd-navigation-item-icon text-primary ml-2"
+      [svgIcon]="item.icon"
+    ></mat-icon>
+  </ng-container>
+
+  <div class="hubsd-navigation-item-title-wrapper">
+    <div class="hubsd-navigation-item-title">
+      <span *ngIf="hovered" [@fadeInLeft]="hovered" class="text-primary">
+        {{ item.menu }}
+      </span>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,20 @@
+.landing-page-card {
+  display: flex;
+  position: relative;
+  left: 0px;
+  height: 300px;
+  transition: 0.4s ease-out;
+}
+
+.landing-page-card:hover {
+  transform: translateY(-10px) translateY(-10px);
+  transition: 0.4s ease-out;
+}
+
+.landing-page-card:hover~.landing-page-card {
+  position: relative;
+}
+
+landing {
+  width: 100%;
+}

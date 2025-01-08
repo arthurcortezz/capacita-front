@@ -1,0 +1,74 @@
+<hubsd-loading-bar></hubsd-loading-bar>
+
+<hubsd-navigation
+  class="bg-app-bar border-color border-r print:hidden fixed max-sm:hidden max-md:hidden"
+  [navigation]="navigation"
+  (hoveredEvent)="handleHovered($event)"
+>
+  <ng-container hubsdNavigationHeader>
+    <div class="flex items-center justify-center h-20 border-b border-color" [ngClass]="!hovered && 'p-4'">
+      <div class="m-auto" [ngClass]="hovered ? 'h-12 scale-175' : 'h-10 scale-150'">
+        <img src="../../../../assets/images/logo/capacita.png" alt="Logo Capacita" class="w-full h-full object-contain" />
+      </div>
+    </div>
+  </ng-container>
+</hubsd-navigation>
+
+<div
+  class="absolute max-sm:pl-0 max-md:pl-0 pl-[70px] w-full h-full max-sm:overflow-y-auto max-md:overflow-y-auto max-sm:max-h-screen max-md:max-h-screen overflow-y-scroll"
+>
+  <div class="flex flex-col flex-auto w-full min-w-0">
+    <div
+      class="bg-primary relative flex flex-0 items-center w-full h-20 px-7 border-b border-color z-49 dark:shadow-none dark:bg-app-bar bg-gradient-to-r print:hidden"
+    >
+      <div class="flex items-center pr-2 space-x-2">
+        <div id="toggle" (click)="menuToggle()" class="md:hidden custom:hidden lg:hidden xl:hidden large:hidden">
+          <div class="one"></div>
+          <div class="two"></div>
+          <div class="three"></div>
+        </div>
+
+        <h2 class="font-semibold text-lg flex flex-col text-white">
+          {{ title }}
+          <span class="font-normal text-sm" *ngIf="companyTitle">{{ companyTitle }}</span>
+        </h2>
+      </div>
+      <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <user></user>
+      </div>
+    </div>
+
+    <div class="flex flex-col flex-auto">
+      <router-outlet *ngIf="true"></router-outlet>
+    </div>
+  </div>
+</div>
+
+<div class="relative md:hidden custom:hidden lg:hidden xl:hidden large:hidden">
+  <div
+    [@slideInOut]="menuVisible ? 'in' : 'out'"
+    class="pt-24 hubsd-navigation-menu fixed top-0 left-0 w-full h-full dark:bg-black bg-white z-40 flex flex-col items-center justify-start transition-all duration-300 p-4 max-sm:overflow-y-auto max-md:overflow-y-auto max-sm:max-h-screen max-md:max-h-screen"
+  >
+    <a
+      *ngFor="let item of navigation"
+      (click)="toggleMenu()"
+      class="hubsd-navigation-item-wrapper dark:bg-zinc-900 bg-zinc-100 rounded-2xl mb-4 p-4 w-full flex items-center mx-1 mt-1"
+      [routerLink]="[item.route]"
+      [routerLinkActive]="'hubsd-navigation-item-active'"
+    >
+      <ng-container>
+        <a class="hubsd-navigation-item flex items-center">
+          <ng-container *ngTemplateOutlet="itemTemplate; context: { item: item }"></ng-container>
+        </a>
+      </ng-container>
+    </a>
+    <hubsd-navigation-switcher-mode [hovered]="hovered"></hubsd-navigation-switcher-mode>
+  </div>
+</div>
+
+<ng-template #itemTemplate let-item="item">
+  <ng-container *ngIf="item.icon">
+    <mat-icon class="hubsd-navigation-item-icon text-primary ml-2" [svgIcon]="item.icon"></mat-icon>
+    <span class="ml-4 text-primary font-bold">{{ item.menu }}</span>
+  </ng-container>
+</ng-template>

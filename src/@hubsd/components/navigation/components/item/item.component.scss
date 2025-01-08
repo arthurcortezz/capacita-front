@@ -1,0 +1,50 @@
+.hubsd-navigation-item-wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 20px 24px;
+  cursor: pointer;
+  -webkit-overflow-scrolling: touch;
+  transition-duration: 400ms;
+  transition-property: left, right;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.hubsd-navigation-item-wrapper:not(.hubsd-navigation-item-active):hover {
+  @apply bg-hover;
+  transition: 0.4s ease-out;
+}
+
+.hubsd-navigation-item-wrapper {
+  padding: 10px;
+  margin: 5px;
+  display: flex;
+  flex-grow: 1;
+  max-width: 90%;
+}
+
+.hubsd-navigation-item {
+  display: flex;
+}
+
+.hubsd-navigation-item-title-wrapper {
+  display: flex;
+  margin-left: 16px;
+}
+
+.hubsd-navigation-item-title {
+  overflow: hidden;
+  text-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.hubsd-navigation-item-active {
+  border: 2px solid #d350f2;
+}

@@ -1,0 +1,42 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <hubsd-header
+    [title]="id ? 'Modificar uma ação existente' : 'Criar uma nova ação'"
+  ></hubsd-header>
+  <div class="px-6 pb-6 w-full xl:w-1/2">
+    <div class="bg-card rounded-md border dark:border-slate-800 p-4">
+      <form [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Nome da ação</mat-label>
+          <input formControlName="name" matInput/>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            O nome é obrigatório.
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="flex flex-row gap-6">
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        [disabled]="form.disabled"
+        [routerLink]="'/acoes'"
+      >
+        Cancelar
+      </button>
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="handleSaveOrUpdate()"
+      >
+        <span *ngIf="!form.disabled">Salvar</span>
+        <mat-progress-spinner
+          *ngIf="form.disabled"
+          [diameter]="24"
+          [mode]="'indeterminate'"
+        ></mat-progress-spinner>
+      </button>
+    </div>
+  </div>
+</div>

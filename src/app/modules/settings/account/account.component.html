@@ -1,0 +1,195 @@
+<div class="bg-card rounded-md border dark:border-slate-800">
+  <div class="flex flex-col flex-auto min-w-0 h-full">
+    <div class="px-6 py-7 w-full">
+      <form [formGroup]="form">
+        <h2 class="mb-4 font-bold text-md">Dados pessoais</h2>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Nome</mat-label>
+          <input formControlName="name" matInput />
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            O nome é obrigatório.
+          </mat-error>
+        </mat-form-field>
+        <div class="flex flex-row flex-wrap gap-4 max-sm:flex-col">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Tipo Pessoa</mat-label>
+            <mat-select
+              formControlName="personType"
+              placeholder="Perfil de acesso"
+              (selectionChange)="onChangePersonType(true)"
+            >
+              <mat-option value="FÍSICA">Pessoa Física</mat-option>
+              <mat-option value="JURÍDICA">Pessoa Jurídica</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field
+            class="flex-auto"
+            *ngIf="form.get('personType').value === 'FÍSICA'"
+          >
+            <mat-label class="font-bold">CPF</mat-label>
+            <input
+              matInput
+              hubsdCpfMask
+              maxlength="11"
+              formControlName="cpf"
+              [value]="form.get('cpf').value"
+            />
+            <mat-error *ngIf="form.get('cpf').hasError('required')">
+              O CPF é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('cpf').hasError('invalidCpf')">
+              O CPF é inválido.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field
+            class="flex-auto"
+            *ngIf="form.get('personType').value === 'JURÍDICA'"
+          >
+            <mat-label class="font-bold">CNPJ</mat-label>
+            <input
+              matInput
+              hubsdCnpjMask
+              maxlength="14"
+              formControlName="cnpj"
+              [value]="form.get('cnpj').value"
+            />
+            <mat-error *ngIf="form.get('cnpj').hasError('required')">
+              O CNPJ é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('cnpj').hasError('invalidCnpj')">
+              O CNPJ é inválido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4 max-sm:flex-col">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">E-mail</mat-label>
+            <input formControlName="email" matInput />
+            <mat-error *ngIf="form.get('email').hasError('required')">
+              O e-mail é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email')">
+              Por favor insira um e-mail válido.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Celular</mat-label>
+            <input
+              matInput
+              hubsdPhoneMask
+              maxlength="15"
+              formControlName="phone"
+            />
+            <mat-error *ngIf="form.get('phone').hasError('required')">
+              O celular é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <h2 class="mb-4 font-bold text-md">Endereço</h2>
+        <div class="flex flex-row flex-wrap gap-4 max-sm:flex-col">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Cep</mat-label>
+            <input
+              maxlength="8"
+              hubsdCepMask
+              matInput
+              type="text"
+              placeholder="Cep"
+              formControlName="cep"
+              (keyup)="onChangeCEP()"
+            />
+            <mat-error *ngIf="form.get('cep').hasError('required')">
+              O CEP é obrigatório.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Rua</mat-label>
+            <input
+              placeholder="Logradouro, avenida ou rua."
+              formControlName="street"
+              matInput
+            />
+            <mat-error *ngIf="form.get('street').hasError('required')">
+              A rua é obrigatória.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Cidade</mat-label>
+            <input matInput placeholder="Cidade" formControlName="city" />
+            <mat-error *ngIf="form.get('city').hasError('required')">
+              Digite um CEP válido.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Estado</mat-label>
+            <input placeholder="Estado" matInput formControlName="state" />
+            <mat-error *ngIf="form.get('state').hasError('required')">
+              Digite um CEP válido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Número</mat-label>
+            <input
+              matInput
+              formControlName="number"
+              placeholder="Número do endereço"
+            />
+            <mat-error *ngIf="form.get('number').hasError('required')">
+              O número é obrigatório.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Bairro</mat-label>
+            <input
+              placeholder="Bairro"
+              formControlName="neighborhood"
+              matInput
+            />
+            <mat-error *ngIf="form.get('neighborhood').hasError('required')">
+              O bairro é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-row flex-wrap gap-4"></div>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Complemento</mat-label>
+          <input
+            placeholder="Ex.: 'Ao lado da igreja'"
+            formControlName="complement"
+            matInput
+          />
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-row gap-6">
+  <button
+    class="w-full mt-6"
+    mat-flat-button
+    [disabled]="form.disabled"
+    [routerLink]="'/dashboard'"
+  >
+    Cancelar
+  </button>
+  <button
+    class="w-full mt-6"
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid"
+    (click)="handleSaveOrUpdate()"
+  >
+    <span *ngIf="!form.disabled">Salvar</span>
+    <mat-progress-spinner
+      *ngIf="form.disabled"
+      [diameter]="24"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </button>
+</div>

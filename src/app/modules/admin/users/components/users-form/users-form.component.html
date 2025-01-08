@@ -1,0 +1,183 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <hubsd-header
+    [title]="id ? 'Modificar um usuário existente' : 'Criar um novo usuário'"
+  ></hubsd-header>
+  <div class="px-6 pb-6 w-full xl:w-1/2 mt-0 mb-0">
+    <div class="bg-card rounded-md border dark:border-slate-800 p-4">
+      <form [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Nome</mat-label>
+          <input
+            formControlName="name"
+            matInput
+            placeholder="Digite o nome do usuário"
+          />
+          <mat-error *ngIf="form.get('email').hasError('required')">
+            O nome é obrigatório.
+          </mat-error>
+        </mat-form-field>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Tipo Pessoa</mat-label>
+            <mat-select
+              formControlName="personType"
+              placeholder="Perfil de acesso"
+              (selectionChange)="onChangePersonType(true)"
+            >
+              <mat-option value="FÍSICA">Pessoa Física</mat-option>
+              <mat-option value="JURÍDICA">Pessoa Jurídica</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field
+            class="flex-auto"
+            *ngIf="form.get('personType').value === 'FÍSICA'"
+          >
+            <mat-label class="font-bold">CPF</mat-label>
+            <input
+              matInput
+              hubsdCpfMask
+              maxlength="11"
+              formControlName="cpf"
+              [value]="form.get('cpf').value"
+              placeholder="Digite o CPF"
+            />
+            <mat-error *ngIf="form.get('cpf').hasError('required')">
+              O CPF é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('cpf').hasError('invalidCpf')">
+              O CPF é inválido.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field
+            class="flex-auto"
+            *ngIf="form.get('personType').value === 'JURÍDICA'"
+          >
+            <mat-label class="font-bold">CNPJ</mat-label>
+            <input
+              matInput
+              hubsdCnpjMask
+              maxlength="14"
+              formControlName="cnpj"
+              [value]="form.get('cnpj').value"
+              placeholder="Digite o CNPJ"
+            />
+            <mat-error *ngIf="form.get('cnpj').hasError('required')">
+              O CNPJ é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('cnpj').hasError('invalidCnpj')">
+              O CNPJ é inválido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Celular</mat-label>
+            <input
+              formControlName="phone"
+              hubsdPhoneMask
+              matInput
+              maxlength="15"
+              placeholder="Ex: (99) 99999-9999"
+            />
+            <mat-error *ngIf="form.get('phone').hasError('required')">
+              O celular é obrigatório.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">E-mail</mat-label>
+            <input
+              formControlName="email"
+              matInput
+              placeholder="Digite o e-mail"
+            />
+            <mat-error *ngIf="form.get('email').hasError('required')">
+              O e-mail é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email')">
+              Por favor insira um e-mail válido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Perfil de Acesso</mat-label>
+            <mat-select formControlName="roleId" placeholder="Perfil de acesso">
+              <mat-option *ngFor="let item of roles" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('roleId').hasError('required')">
+              O perfil de acesso é obrigatório.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Empresa</mat-label>
+            <mat-select formControlName="companyId" placeholder="Empresa">
+              <mat-option *ngFor="let item of companies" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('companyId').hasError('required')">
+              A empresa é obrigatória.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Senha</mat-label>
+            <input
+              formControlName="password"
+              type="password"
+              matInput
+              placeholder="Digite a senha"
+            />
+            <mat-error *ngIf="form.get('password').hasError('required')">
+              A senha é obrigatoria.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Senha (Confirmação)</mat-label>
+            <input
+              formControlName="confirmPassword"
+              type="password"
+              matInput
+              placeholder="Confirme a senha"
+            />
+            <mat-error *ngIf="form.get('confirmPassword').hasError('required')">
+              A confirmação da senha é obrigatória.
+            </mat-error>
+            <mat-error
+              *ngIf="form.get('confirmPassword').hasError('mustMatch')"
+            >
+              As senhas devem ser iguais.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div class="flex flex-row gap-6">
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        [disabled]="form.disabled"
+        [routerLink]="'/usuarios'"
+      >
+        Cancelar
+      </button>
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="handleSaveOrUpdate()"
+      >
+        <span *ngIf="!form.disabled">Salvar</span>
+        <mat-progress-spinner
+          *ngIf="form.disabled"
+          [diameter]="24"
+          [mode]="'indeterminate'"
+        ></mat-progress-spinner>
+      </button>
+    </div>
+  </div>
+</div>

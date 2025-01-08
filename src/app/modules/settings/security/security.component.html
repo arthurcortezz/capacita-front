@@ -1,0 +1,55 @@
+<div class="bg-card rounded-md border dark:border-slate-800">
+  <div class="flex flex-col flex-auto min-w-0 h-full">
+    <div class="px-6 py-7 w-full">
+      <form [formGroup]="form">
+        <div class="flex flex-col flex-wrap gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Senha antiga</mat-label>
+            <input type="password" formControlName="oldPass" matInput />
+            <mat-error *ngIf="form.get('oldPass').hasError('required')">
+              Senha antiga é obrigatória.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Senha nova</mat-label>
+            <input type="password" formControlName="newPass" matInput />
+            <mat-error *ngIf="form.get('newPass').hasError('required')">
+              Senha nova é obrigatória.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Confirmar senha nova</mat-label>
+            <input type="password" formControlName="confirmNewPass" matInput />
+            <mat-error *ngIf="form.get('newPass').hasError('required')">
+              Confirmação da nova senha obrigatória.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="flex flex-row gap-6">
+  <button
+    class="w-full mt-6"
+    mat-flat-button
+    [disabled]="form.disabled"
+    [routerLink]="'/dashboard'"
+  >
+    Cancelar
+  </button>
+  <button
+    class="w-full mt-6"
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid"
+    (click)="handleSaveOrUpdate()"
+  >
+    <span *ngIf="!form.disabled">Salvar</span>
+    <mat-progress-spinner
+      *ngIf="form.disabled"
+      [diameter]="24"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </button>
+</div>

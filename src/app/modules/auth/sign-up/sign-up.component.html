@@ -1,0 +1,96 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start flex-auto min-w-0 text-secondary-300 min-h-screen">
+  <div class="grid items-center justify-center w-full px-4 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none dark:bg-default sm:bg-card h-full">
+    <div class="w-full mx-auto sm:mx-0">
+      <div class="w-60 m-auto mb-10 mt-10">
+        <img src="../../../../assets/images/logo/capacita.png" alt="Logo Capacita" />
+      </div>
+
+      <div class="mt-8 text-lg tracking-tight dark:text-low-pure leading-tight">
+        <p class="text-primary">Cadastre-se</p>
+        <span class="text-md">Informe seus dados pessoais</span>
+      </div>
+
+      <form class="mt-8" #signUpNgForm="ngForm" [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label class="text-secondary-300 dark:text-gray-50">Nome Completo</mat-label>
+          <input id="name" placeholder="Digite aqui" formControlName="name" matInput />
+          <mat-error *ngIf="form.get('name').hasError('required')"> O nome é obrigatório. </mat-error>
+        </mat-form-field>
+
+        <div class="flex w-full gap-x-4">
+          <mat-form-field class="flex-auto">
+            <mat-label class="text-secondary-300 dark:text-gray-50">CPF</mat-label>
+            <input matInput hubsdCpfMask maxlength="11" placeholder="CPF" formControlName="cpf" />
+            <mat-error *ngIf="form.get('cpf').hasError('required')"> O CPF é obrigatório. </mat-error>
+            <mat-error *ngIf="form.get('cpf').hasError('invalidCpf')"> O CPF é inválido. </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label class="font-bold">Telefone</mat-label>
+            <input placeholder="(00) 00000-0000" formControlName="phone" hubsdPhoneMask matInput maxlength="15" />
+            <mat-error *ngIf="form.get('phone').hasError('required')"> O telefone é obrigatório. </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field class="w-full">
+          <mat-label class="text-secondary-300 dark:text-gray-50">E-mail</mat-label>
+          <input id="email" placeholder="mail@email.com" formControlName="email" matInput />
+          <mat-error *ngIf="form.get('email').hasError('required')"> O e-mail é obrigatório. </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mb-4">
+          <mat-label class="text-secondary-300 dark:text-gray-50">Senha</mat-label>
+          <input
+            name="password"
+            id="password"
+            placeholder="Digite a senha"
+            formControlName="password"
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+          />
+          <button mat-icon-button type="button" (click)="hidePassword = !hidePassword" matSuffix>
+            <mat-icon *ngIf="!hidePassword" [svgIcon]="'mat_outline:visibility'"></mat-icon>
+            <mat-icon *ngIf="hidePassword" [svgIcon]="'mat_outline:visibility_off'"></mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.invalid">
+            {{ form.get("password")?.errors?.message }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full mb-4">
+          <mat-label class="text-secondary-300 dark:text-gray-50">Confirmar senha</mat-label>
+          <input
+            matInput
+            name="password"
+            placeholder="Digite a senha novamente"
+            formControlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+          />
+          <button mat-icon-button type="button" (click)="hideConfirmPassword = !hideConfirmPassword" matSuffix>
+            <mat-icon *ngIf="!hideConfirmPassword" [svgIcon]="'mat_outline:visibility'"></mat-icon>
+            <mat-icon *ngIf="hideConfirmPassword" [svgIcon]="'mat_outline:visibility_off'"></mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('confirmPassword')?.invalid">
+            {{ form.get("confirmPassword")?.errors?.message }}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="flex items-center justify-start">
+          <mat-checkbox class="pr-0" formControlName="agreeTerms" [color]="'primary'"> </mat-checkbox>
+          <span class="text-secondary-300 dark:text-gray-50 text-justify">
+            Ao me cadastrar, manifesto minha concordância com os Termos de Utilização e Políticas.
+          </span>
+        </div>
+        <button class="w-full mt-6" mat-flat-button color="primary" [disabled]="form.invalid" (click)="signUp()">
+          <span>Cadastrar-se </span>
+        </button>
+      </form>
+    </div>
+    <div class="w-full h-full relative min-h-20">
+      <div class="w-full flex justify-center mt-4">
+        <button mat-flat-button class="w-full bg-none" class="bg-none" (click)="clickBack()">
+          <mat-icon [svgIcon]="'uil:back-arrow'"></mat-icon>
+          <span class="ml-4 text-secondary-600 dark:text-white">Voltar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div [ngClass]="hovered ? 'flex' : 'hidden max-sm:flex max-md:flex'" class="p-4">
+  <div class="m-auto rounded-3xl bg-gradient-to-r bg-secondary">
+    <div class="flex justify-center p-2 relative">
+      <div class="slide-background bg-white rounded-2xl m-2" [@slide]="mode"></div>
+      <button
+        [ngClass]="mode === 'light' ? 'text-dark' : 'text-white'"
+        class="flex flex-row items-center rounded-2xl px-3 py-2 font-bold gap-2"
+        (click)="changeMode('light')"
+      >
+        <mat-icon [svgIcon]="'uil:sun'"></mat-icon>
+        Claro
+      </button>
+
+      <button
+        [ngClass]="mode === 'dark' ? 'text-black' : 'text-black'"
+        class="flex flex-row items-center rounded-2xl px-3 py-2 font-bold gap-2"
+        (click)="changeMode('dark')"
+      >
+        <mat-icon [svgIcon]="'uil:moon'"></mat-icon>
+        Escuro
+      </button>
+    </div>
+  </div>
+</div>

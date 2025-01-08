@@ -1,0 +1,63 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start flex-auto min-w-0 text-secondary-300 min-h-screen">
+  <div class="grid items-center justify-center w-full px-4 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none dark:bg-default sm:bg-card h-full">
+    <div class="w-full mx-auto sm:mx-0">
+      <div class="w-60 m-auto mb-10">
+        <img src="../../../../assets/images/logo/capacita.png" alt="Logo Capacita" />
+      </div>
+
+      <div class="mt-8 text-lg tracking-tight dark:text-low-pure leading-tight">
+        <p>Acesse sua conta</p>
+        <span class="text-md">
+          Não tem uma conta?
+          <a class="text-primary cursor-pointer hover:underline" [routerLink]="['/registrar']">Cadastre-se aqui.</a>
+        </span>
+      </div>
+
+      <form class="mt-8" #signInNgForm="ngForm" [formGroup]="signInForm" (ngSubmit)="signIn()">
+        <mat-form-field class="w-full mb-2">
+          <mat-label class="text-secondary-300 dark:text-gray-50">E-mail</mat-label>
+          <input name="email" id="email" placeholder="Digite aqui" formControlName="email" matInput />
+          <mat-error *ngIf="signInForm.get('email').hasError('required')"> O e-mail é obrigatório </mat-error>
+          <mat-error *ngIf="signInForm.get('email').hasError('email')"> Por favor insira um e-mail válido. </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label class="text-secondary-300 dark:text-gray-50">Senha</mat-label>
+          <input
+            name="password"
+            id="password"
+            placeholder="•••••••••••••••••••••"
+            formControlName="password"
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            #passwordField
+          />
+          <button mat-icon-button type="button" (click)="hidePassword = !hidePassword" matSuffix>
+            <mat-icon *ngIf="!hidePassword" [svgIcon]="'mat_outline:visibility'"></mat-icon>
+            <mat-icon *ngIf="hidePassword" [svgIcon]="'mat_outline:visibility_off'"></mat-icon>
+          </button>
+          <mat-error>A senha é obrigatória.</mat-error>
+        </mat-form-field>
+
+        <div class="inline-flex items-center justify-between w-full mt-1.5">
+          <mat-checkbox [color]="'primary'">
+            <span class="text-secondary-300 dark:text-gray-50"> Lembrar senha </span>
+          </mat-checkbox>
+          <a class="text-primary" [routerLink]="['/esqueci-minha-senha']">Esqueceu sua senha? </a>
+        </div>
+        <button type="submit" class="w-full mt-4" color="primary" mat-flat-button [disabled]="signInForm.invalid">
+          <span *ngIf="!signInForm.disabled">Entrar</span>
+          <mat-progress-spinner *ngIf="signInForm.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+        </button>
+      </form>
+    </div>
+    <div class="w-full h-full relative min-h-20">
+      <div class="w-full flex justify-center mt-4">
+        <button mat-flat-button class="w-full bg-none" class="bg-none" (click)="clickBack()">
+          <mat-icon [svgIcon]="'uil:back-arrow'"></mat-icon>
+          <span class="ml-4 text-secondary-600 dark:text-white">Voltar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

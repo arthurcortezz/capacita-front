@@ -1,0 +1,13 @@
+.slide-background {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+
+button {
+  width: 100px;
+  z-index: 2;
+}

@@ -1,0 +1,15 @@
+<div
+  class="z-1 hover:bg-gray-100 dark:hover:bg-gray-700 items-center justify-center bg-card rounded-md w-full h-40 max-h-40 cursor-pointer relative"
+>
+  <div
+    class="p-4 flex w-full h-full justify-between"
+    (click)="handleAction.emit({ action: action, id: id })"
+  >
+    <div
+      class="flex md:flex-col items-center md:justify-center justify-evenly w-full"
+    >
+      <span class="text-xl md:w-full text-center"> {{ title }} </span>
+      <mat-icon class="w-20 h-20" [svgIcon]="icon" matPrefix></mat-icon>
+    </div>
+  </div>
+</div>

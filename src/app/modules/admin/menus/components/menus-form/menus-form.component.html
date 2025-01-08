@@ -1,0 +1,76 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <hubsd-header
+    [title]="id ? 'Modificar um menu existente' : 'Criar um novo menu'"
+  ></hubsd-header>
+  <div class="px-6 pb-6 w-full xl:w-1/2">
+    <div class="bg-card rounded-md border dark:border-slate-800 p-4">
+      <form [formGroup]="form">
+        <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+          <mat-form-field class="w-full sm:flex-auto">
+            <mat-label class="font-bold">Nome do menu</mat-label>
+            <input formControlName="name" type="text" matInput />
+            <mat-error *ngIf="form.get('name').hasError('required')">
+              O nome do menu é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-full sm:flex-auto">
+            <mat-label class="font-bold">Rota do menu</mat-label>
+            <input formControlName="route" type="text" matInput />
+            <mat-error *ngIf="form.get('route').hasError('required')">
+              A rota do menu é obrigatória.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+          <mat-form-field class="w-full sm:flex-auto">
+            <mat-label class="font-bold">Chave do menu</mat-label>
+            <input formControlName="menuKey" type="text" matInput />
+            <mat-error *ngIf="form.get('menuKey').hasError('required')">
+              A chave do menu é obrigatória.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-full sm:flex-auto">
+            <mat-label class="font-bold">Ícone do menu</mat-label>
+            <input formControlName="icon" type="text" matInput />
+            <mat-error *ngIf="form.get('icon').hasError('required')">
+              O ícone do menu é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <menus-privileges-form
+        *ngIf="menu"
+        [actionsMenus]="menu.actionsMenus"
+        (emitter)="syncPrivileges($event)"
+      ></menus-privileges-form>
+    </div>
+    <div class="flex flex-col gap-4 sm:flex-row">
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        [disabled]="form.disabled"
+        [routerLink]="'/menus'"
+      >
+        Cancelar
+      </button>
+      <button
+        class="w-full mt-6"
+        mat-flat-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="handleSaveOrUpdate()"
+      >
+        <span *ngIf="!form.disabled">Salvar</span>
+        <mat-progress-spinner
+          *ngIf="form.disabled"
+          [diameter]="24"
+          [mode]="'indeterminate'"
+        ></mat-progress-spinner>
+      </button>
+    </div>
+  </div>
+</div>
