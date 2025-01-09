@@ -1,23 +1,16 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { finalize, Subject, takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { finalize, Subject, takeUntil } from "rxjs";
 
-import { HubsdToastService } from '@hubsd/services/toast';
+import { HubsdToastService } from "@hubsd/services/toast";
 
-import { ActionsService } from './dashboard.service';
-import { ActionInterface } from './dashboard.types';
-
-
-
+import { ActionsService } from "./dashboard.service";
+import { ActionInterface } from "./dashboard.types";
 
 @Component({
-  selector: 'actions-form',
-  templateUrl: './dashboard.component.html',
+  selector: "actions-form",
+  templateUrl: "./dashboard.component.html",
   encapsulation: ViewEncapsulation.None,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -36,11 +29,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ["", [Validators.required]],
     });
 
     this.activatedRoute.paramMap.subscribe((params) => {
-      this.id = parseInt(params.get('id'));
+      this.id = parseInt(params.get("id"));
 
       if (this.id) {
         void this.service
@@ -74,14 +67,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.toastService.handleMessage(res, null, { handleRequest: true });
-            this.router.navigateByUrl('acoes');
+            this.router.navigateByUrl("acoes");
           },
           error: (error) => {
-            this.toastService.handleMessage(
-              error,
-              'Não foi possível modificar a ação.',
-              { handleRequest: true }
-            );
+            this.toastService.handleMessage(error, "Não foi possível modificar a ação.", { handleRequest: true });
           },
         });
     } else {
@@ -96,14 +85,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.toastService.handleMessage(res, null, { handleRequest: true });
-            this.router.navigateByUrl('acoes');
+            this.router.navigateByUrl("acoes");
           },
           error: (error) => {
-            this.toastService.handleMessage(
-              error,
-              'Não foi possível criar a ação.',
-              { handleRequest: true }
-            );
+            this.toastService.handleMessage(error, "Não foi possível criar a ação.", { handleRequest: true });
           },
         });
     }

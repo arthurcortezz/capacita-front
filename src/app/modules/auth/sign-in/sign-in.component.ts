@@ -1,26 +1,21 @@
-import { finalize } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import {
-  NgForm,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { finalize } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 
-import { HubsdToastService } from '@hubsd/services/toast';
-import { AuthService } from '../../../core/auth/auth.service';
+import { HubsdToastService } from "@hubsd/services/toast";
+import { AuthService } from "../../../core/auth/auth.service";
 
 @Component({
-  selector: 'auth-sign-in',
-  templateUrl: './sign-in.component.html',
+  selector: "auth-sign-in",
+  templateUrl: "./sign-in.component.html",
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
       .mdc-text-field {
         .mdc-floating-label {
           .mat-mdc-form-field-required-marker {
-            color: #004c98;
+            color: #0b4d1c;
           }
         }
       }
@@ -28,20 +23,20 @@ import { AuthService } from '../../../core/auth/auth.service';
         .mdc-text-field {
           .mdc-floating-label {
             .mat-mdc-form-field-required-marker {
-              color: #f9fafb;
+              color: #0b4d1c;
             }
           }
         }
       }
       .mdc-checkbox__background {
-        border: 2px solid #d350f2 !important;
+        border: 2px solid #0b4d1c !important;
       }
     `,
   ],
 })
 export class AuthSignInComponent implements OnInit {
   public hidePassword = true;
-  @ViewChild('signInNgForm') signInNgForm: NgForm;
+  @ViewChild("signInNgForm") signInNgForm: NgForm;
 
   public signInForm: UntypedFormGroup;
 
@@ -55,8 +50,8 @@ export class AuthSignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.signInForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required],
     });
   }
 
@@ -72,21 +67,15 @@ export class AuthSignInComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          const redirectURL =
-            this.activatedRoute.snapshot.queryParamMap.get('redirectURL') ||
-            '/-';
+          const redirectURL = this.activatedRoute.snapshot.queryParamMap.get("redirectURL") || "/-";
           this.router.navigateByUrl(redirectURL);
         },
         error: (error) => {
-          this.toastService.handleMessage(
-            error,
-            'Não foi possível fazer login.',
-            { handleRequest: true }
-          );
+          this.toastService.handleMessage(error, "Não foi possível fazer login.", { handleRequest: true });
         },
       });
   }
   clickBack(): void {
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl("/");
   }
 }

@@ -15,7 +15,7 @@ import { AuthService } from "../../../core/auth/auth.service";
       .mdc-text-field {
         .mdc-floating-label {
           .mat-mdc-form-field-required-marker {
-            color: #004c98;
+            color: #0b4d1c;
           }
         }
       }
@@ -23,13 +23,13 @@ import { AuthService } from "../../../core/auth/auth.service";
         .mdc-text-field {
           .mdc-floating-label {
             .mat-mdc-form-field-required-marker {
-              color: #f9fafb;
+              color: #0b4d1c;
             }
           }
         }
       }
       .mdc-checkbox__background {
-        border: 2px solid #d350f2 !important;
+        border: 2px solid #0b4d1c !important;
       }
       .mdc-form-field {
         padding-right: 0px !important;
