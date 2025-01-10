@@ -16,7 +16,8 @@
     "lib": ["ES2022", "dom", "esnext.asynciterable"],
     "paths": {
       "@hubsd/*": ["src/@hubsd/*"]
-    }
+    },
+    "types": ["node"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false

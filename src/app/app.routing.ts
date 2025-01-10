@@ -161,6 +161,15 @@ export const appRoutes: Route[] = [
         },
         loadChildren: () => import("./modules/settings/settings.module").then((m) => m.SettingsModule),
       },
+      {
+        path: "cursos",
+        canMatch: [RoleGuard],
+        data: {
+          title: "Cursos",
+          menuKey: "COURSES",
+        },
+        loadChildren: () => import("./modules/admin/courses/courses.module").then((m) => m.CoursesModule),
+      },
     ],
   },
 ];

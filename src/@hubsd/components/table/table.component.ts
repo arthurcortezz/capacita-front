@@ -1,18 +1,19 @@
-import { Sort } from '@angular/material/sort';
-import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Sort } from "@angular/material/sort";
+import { PageEvent } from "@angular/material/paginator";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SelectionModel } from "@angular/cdk/collections";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
-import { HubsdTableInterface } from './table.types';
-import { UserService } from '../../../app/core/user/user.service';
+import { HubsdTableInterface } from "./table.types";
+import { UserService } from "../../../app/core/user/user.service";
 
 @Component({
-  selector: 'hubsd-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  selector: "hubsd-table",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.scss"],
 })
 export class HubsdTableComponent implements OnInit {
+  @Input() card?: boolean;
   @Input() config: HubsdTableInterface;
   @Input() data: any[] & { rows: any[]; count: number };
   @Input() selection = new SelectionModel<number>(true, []);
@@ -28,43 +29,29 @@ export class HubsdTableComponent implements OnInit {
   public dataSource: any[] = null;
   public dataSourceLength: number;
 
-  public filterValue: string = '';
-  public selectedStatus: string = '';
+  public filterValue: string = "";
+  public selectedStatus: string = "";
 
   public listable: boolean;
   public editable: boolean;
   public deletable: boolean;
   public changeStatusPermission: boolean;
 
-  public rankingIcons = ['gold-medal', 'silver-medal', 'bronze-medal'];
+  public rankingIcons = ["gold-medal", "silver-medal", "bronze-medal"];
 
-  constructor(
-    private readonly userService: UserService,
-    private readonly activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {
+  constructor(private readonly userService: UserService, private readonly activatedRoute: ActivatedRoute, private router: Router) {
     const menuKey = this.activatedRoute.snapshot.data.menuKey;
 
     this.userService.user$.subscribe((user) => {
-      this.listable = user.privileges
-        .map((item) => item.key)
-        .includes(`${menuKey}_LISTAR`);
-      this.editable = user.privileges
-        .map((item) => item.key)
-        .includes(`${menuKey}_MODIFICAR`);
-      this.deletable = user.privileges
-        .map((item) => item.key)
-        .includes(`${menuKey}_REMOVER`);
-      this.changeStatusPermission = !![3, 2].find(
-        (e) => e === parseInt(user.role.id)
-      );
+      this.listable = user.privileges.map((item) => item.key).includes(`${menuKey}_LISTAR`);
+      this.editable = user.privileges.map((item) => item.key).includes(`${menuKey}_MODIFICAR`);
+      this.deletable = user.privileges.map((item) => item.key).includes(`${menuKey}_REMOVER`);
+      this.changeStatusPermission = !![3, 2].find((e) => e === parseInt(user.role.id));
     });
   }
 
   ngOnInit(): void {
-    this.defaultPageSize = this.config?.paginatorConfig?.defaultPageSize
-      ? this.config.paginatorConfig.defaultPageSize
-      : this.defaultPageSize;
+    this.defaultPageSize = this.config?.paginatorConfig?.defaultPageSize ? this.config.paginatorConfig.defaultPageSize : this.defaultPageSize;
     this.pageIndex = 0;
     this.pageSize = this.defaultPageSize;
 
@@ -76,8 +63,7 @@ export class HubsdTableComponent implements OnInit {
   }
 
   onChangeStatus(data: any) {
-    if (data.value)
-      this.dataSource = this.data.rows.filter((e) => data.value === e.status);
+    if (data.value) this.dataSource = this.data.rows.filter((e) => data.value === e.status);
     else this.dataSource = this.data.rows;
   }
 
@@ -101,24 +87,19 @@ export class HubsdTableComponent implements OnInit {
   }
 
   masterToggle(): void {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.forEach((row) => this.selection.select(row.id));
+    this.isAllSelected() ? this.selection.clear() : this.dataSource.forEach((row) => this.selection.select(row.id));
   }
 
   formatIdentificationNumber(input: string): string {
     if (input) {
-      let value = input.replace(/\D/g, '');
+      let value = input.replace(/\D/g, "");
 
       if (value.length <= 11) {
-        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
       }
 
       if (value.length <= 14) {
-        value = value.replace(
-          /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
-          '$1.$2.$3/$4-$5'
-        );
+        value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
       }
 
       return value;
@@ -126,36 +107,33 @@ export class HubsdTableComponent implements OnInit {
   }
 
   formatPhoneNumber(phone: string): string {
-    return `+${phone.substring(0, 2)} (${phone.substring(
-      2,
-      4
-    )}) ${phone.substring(4, 9)}-${phone.substring(9)}`;
+    return `+${phone.substring(0, 2)} (${phone.substring(2, 4)}) ${phone.substring(4, 9)}-${phone.substring(9)}`;
   }
 
   getByKeyValue(data: any, key: string, type?: string): any {
     let keyFiltered = data[key];
 
-    if (key.includes('.')) {
+    if (key.includes(".")) {
       keyFiltered = data;
 
-      key.split('.').forEach((element) => {
+      key.split(".").forEach((element) => {
         keyFiltered = keyFiltered[element];
       });
     }
 
     switch (type) {
-      case 'timestamp':
+      case "timestamp":
         let adjustedDate = new Date(keyFiltered);
         adjustedDate.setHours(adjustedDate.getHours() - 3);
         return adjustedDate;
-      case 'length':
+      case "length":
         return keyFiltered.length;
-      case 'identificationNumber':
+      case "identificationNumber":
         return this.formatIdentificationNumber(keyFiltered);
-      case 'phoneNumber':
+      case "phoneNumber":
         return this.formatPhoneNumber(keyFiltered);
-      case 'boolean':
-        return keyFiltered ? 'Sim' : 'Não';
+      case "boolean":
+        return keyFiltered ? "Sim" : "Não";
       default:
         return keyFiltered as string;
     }
@@ -163,11 +141,11 @@ export class HubsdTableComponent implements OnInit {
 
   sortData(sort: Sort): void {
     if (!this.config?.sortConfig?.requestPagination) {
-      if (!sort.active || sort.direction === '') {
+      if (!sort.active || sort.direction === "") {
         this.dataSource = this.data.sort((a, b) => a.id - b.id);
       } else {
         this.dataSource = this.data.sort((a, b) => {
-          const isAsc = sort.direction === 'asc';
+          const isAsc = sort.direction === "asc";
           return compare(a[sort.active], b[sort.active], isAsc);
         });
       }
@@ -175,11 +153,7 @@ export class HubsdTableComponent implements OnInit {
       this.applyPagination();
       this.applyFilter();
     } else {
-      this.sortabled.emit(
-        sort.direction !== ''
-          ? { field: sort.active, sort: sort.direction }
-          : {}
-      );
+      this.sortabled.emit(sort.direction !== "" ? { field: sort.active, sort: sort.direction } : {});
     }
   }
 
@@ -211,9 +185,7 @@ export class HubsdTableComponent implements OnInit {
     if (!this.config?.searchableConfig?.requestPagination) {
       const filterValueLowerCase = this.filterValue.toLowerCase();
       const filteredData = this.data.filter((item) =>
-        Object.keys(item).some((key) =>
-          item[key]?.toString().toLowerCase().includes(filterValueLowerCase)
-        )
+        Object.keys(item).some((key) => item[key]?.toString().toLowerCase().includes(filterValueLowerCase))
       );
 
       const startIndex = this.pageIndex * this.pageSize;

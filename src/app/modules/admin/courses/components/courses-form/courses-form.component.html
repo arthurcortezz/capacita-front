@@ -1,0 +1,41 @@
+<div class="flex flex-col flex-auto min-w-0 h-full">
+  <hubsd-header [title]="id ? 'Modificar um curso existente' : 'Criar um novo curso'"></hubsd-header>
+  <div class="px-6 pb-6 w-full xl:w-1/2">
+    <div class="bg-card rounded-md border dark:border-slate-800 p-4">
+      <form [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Nome</mat-label>
+          <input placeholder="Digite o nome" formControlName="name" matInput />
+          <mat-error *ngIf="form.get('name').hasError('required')"> O nome é obrigatório. </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Descrição</mat-label>
+          <input placeholder="Digite a descrição" formControlName="description" matInput />
+          <mat-error *ngIf="form.get('description').hasError('required')"> A descrição é obrigatória. </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Duração</mat-label>
+          <input placeholder="Digite a duração" formControlName="duration" matInput />
+          <mat-error *ngIf="form.get('duration').hasError('required')"> A duração é obrigatória. </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Imagem</mat-label>
+          <input placeholder="Digite a URL da imagem" formControlName="image" matInput />
+          <mat-error *ngIf="form.get('image').hasError('required')"> A imagem é obrigatória. </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label class="font-bold">Preço</mat-label>
+          <input placeholder="Digite o valor do curso" formControlName="value" matInput />
+          <mat-error *ngIf="form.get('value').hasError('required')"> O valor é obrigatório. </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="flex flex-row gap-6">
+      <button class="w-full mt-6" mat-flat-button [disabled]="form.disabled" [routerLink]="'/cursos'">Cancelar</button>
+      <button class="w-full mt-6" mat-flat-button color="primary" [disabled]="form.invalid" (click)="handleSaveOrUpdate()">
+        <span *ngIf="!form.disabled">Salvar</span>
+        <mat-progress-spinner *ngIf="form.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+      </button>
+    </div>
+  </div>
+</div>

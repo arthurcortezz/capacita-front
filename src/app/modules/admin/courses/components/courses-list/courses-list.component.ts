@@ -1,23 +1,24 @@
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { SelectionModel } from "@angular/cdk/collections";
-import { HubsdToastService } from "@hubsd/services/toast";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 
-import { ActionsService } from "../../actions.service";
+import { CoursesService } from "../../courses.service";
+import { HubsdToastService } from "@hubsd/services/toast";
 import { HubsdHeaderActionInterface } from "@hubsd/components/header";
 import { HubsdConfirmationService } from "@hubsd/services/confirmation";
-import { ActionFilterInterface, ActionPaginatedInterface } from "../../actions.types";
+import { CourseFilterInterface, CoursePaginatedInterface } from "../../courses.types";
 import { HubsdTableInterface, HubsdTablePaginatorInterface, HubsdTableSortInterface } from "@hubsd/components/table";
 
 @Component({
-  selector: "actions-list",
-  templateUrl: "./actions-list.component.html",
+  selector: "courses-list",
+  templateUrl: "./courses-list.component.html",
+  encapsulation: ViewEncapsulation.None,
 })
-export class ActionsListComponent implements OnInit, OnDestroy {
-  public data: ActionPaginatedInterface = null;
+export class CoursesListComponent implements OnInit, OnDestroy {
+  public data: CoursePaginatedInterface = null;
   public config: HubsdTableInterface = {
-    title: "Ações",
+    title: "Cursos",
     headers: [
       { name: "Nome", key: "name" },
       { name: "Criado em", key: "createdAt" },
@@ -28,6 +29,7 @@ export class ActionsListComponent implements OnInit, OnDestroy {
       { type: "timestamp", key: "createdAt" },
       { type: "timestamp", key: "updatedAt" },
     ],
+    view: true,
     actions: true,
     searchable: true,
     searchableConfig: {
@@ -45,29 +47,26 @@ export class ActionsListComponent implements OnInit, OnDestroy {
   };
   public sort: HubsdTableSortInterface;
   public paginator: HubsdTablePaginatorInterface;
-
   public selection = new SelectionModel<number>(true, []);
   private readonly unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
-    private readonly service: ActionsService,
-    private readonly confirmationService: HubsdConfirmationService,
+    private readonly router: Router,
+    private readonly service: CoursesService,
     private readonly toastService: HubsdToastService,
-    private readonly router: Router
+    private readonly confirmationService: HubsdConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.getAll();
   }
 
-  getAll(filters?: ActionFilterInterface): void {
+  getAll(filters?: CourseFilterInterface): void {
     this.service
       .findAllPaginated(this.sort, this.paginator, filters)
       .pipe(takeUntil(this.unsubscribeAll))
-      .subscribe((res: { data: { actions: ActionPaginatedInterface } }) => {
-        this.data = res.data.actions;
-        console.log("🚀 ~ ActionsListComponent ~ .subscribe ~ this.data:", this.data);
-        console.log("🚀 ~ ActionsListComponent ~ .subscribe ~ this.data:", this.config);
+      .subscribe((res: { data: { courses: CoursePaginatedInterface } }) => {
+        this.data = res.data.courses;
       });
   }
 
@@ -80,9 +79,9 @@ export class ActionsListComponent implements OnInit, OnDestroy {
     switch (data.action) {
       case "form":
         if (!data.id) {
-          this.router.navigateByUrl("acoes/criar");
+          this.router.navigateByUrl("cursos/criar");
         } else {
-          this.router.navigateByUrl(`acoes/editar/${data.id}`);
+          this.router.navigateByUrl(`cursos/editar/${data.id}`);
         }
         break;
       case "delete":
@@ -98,11 +97,14 @@ export class ActionsListComponent implements OnInit, OnDestroy {
                 });
               },
               error: (error) => {
-                this.toastService.handleMessage(error, "Não foi possível remover a ação.", { handleRequest: true });
+                this.toastService.handleMessage(error, "Não foi possível remover o curso.", { handleRequest: true });
               },
             });
           }
         });
+        break;
+      case "observe":
+        this.router.navigateByUrl(`cursos/visualizar/${data.id}`);
         break;
     }
   }
