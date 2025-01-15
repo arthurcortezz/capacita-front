@@ -1,18 +1,27 @@
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
-import { SelectionModel } from "@angular/cdk/collections";
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { CoursesService } from "../../courses.service";
-import { HubsdToastService } from "@hubsd/services/toast";
-import { HubsdHeaderActionInterface } from "@hubsd/components/header";
-import { HubsdConfirmationService } from "@hubsd/services/confirmation";
-import { CourseFilterInterface, CoursePaginatedInterface, CoursesInterface } from "../../courses.types";
-import { HubsdTableInterface, HubsdTablePaginatorInterface, HubsdTableSortInterface } from "@hubsd/components/table";
+import { CoursesService } from '../../courses.service';
+import { HubsdToastService } from '@hubsd/services/toast';
+import { HubsdHeaderActionInterface } from '@hubsd/components/header';
+import { HubsdConfirmationService } from '@hubsd/services/confirmation';
+import {
+  CourseFilterInterface,
+  CourseLessonsInterface,
+  CoursePaginatedInterface,
+  CoursesInterface,
+} from '../../courses.types';
+import {
+  HubsdTableInterface,
+  HubsdTablePaginatorInterface,
+  HubsdTableSortInterface,
+} from '@hubsd/components/table';
 
 @Component({
-  selector: "courses-view",
-  templateUrl: "./courses-view.component.html",
+  selector: 'courses-view',
+  templateUrl: './courses-view.component.html',
   encapsulation: ViewEncapsulation.None,
 })
 export class CoursesViewComponent implements OnInit, OnDestroy {
@@ -34,7 +43,7 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
 
   getCourse(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
-      this.id = parseInt(params.get("id"));
+      this.id = parseInt(params.get('id'));
 
       if (this.id) {
         void this.service
@@ -52,8 +61,8 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
     this.unsubscribeAll.complete();
   }
 
-  courseInit(): void {
-    this.toastService.handleMessage("Em desenvolvimento");
+  courseInit(lesson: CourseLessonsInterface): void {
+    this.router.navigate([`/cursos/visualizar/${this.id}/${lesson.id}`]);
   }
 
   handleAction(data: HubsdHeaderActionInterface): void {}

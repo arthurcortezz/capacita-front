@@ -37,7 +37,7 @@
       *ngFor="let value of dataSource"
       (click)="actionListener.emit({ action: 'view', id: value.id })"
     >
-      <img [src]="value.imageUrl || 'https://via.placeholder.com/150'" alt="Imagem do curso" class="w-full h-48 object-cover rounded-lg" />
+      <img [src]="value.image || 'https://via.placeholder.com/150'" alt="Imagem do curso" class="w-full h-48 object-cover rounded-lg" />
       <p class="text-lg text-gray-500 mt-2">{{ value.name }}</p>
       <mat-menu #menu="matMenu" yPosition="above" xPosition="before">
         <button mat-menu-item *ngIf="editable" (click)="actionListener.emit({ action: 'form', id: value.id })">

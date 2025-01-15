@@ -1,43 +1,51 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
-import { finalize, Subject, takeUntil } from "rxjs";
+import { finalize, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  FormArray,
+  Validators,
+  UntypedFormGroup,
+  UntypedFormBuilder,
+} from '@angular/forms';
 
-import { HubsdToastService } from "@hubsd/services/toast";
-
-import { CoursesService } from "../../courses.service";
-import { CoursesInterface } from "../../courses.types";
+import { CoursesService } from '../../courses.service';
+import { CourseLessonsInterface, CoursesInterface } from '../../courses.types';
+import { HubsdToastService } from '@hubsd/services/toast';
 
 @Component({
-  selector: "courses-form",
-  templateUrl: "./courses-form.component.html",
+  selector: 'courses-form',
+  templateUrl: './courses-form.component.html',
   encapsulation: ViewEncapsulation.None,
 })
 export class CoursesFormComponent implements OnInit, OnDestroy {
   public id: number;
-  public course: CoursesInterface;
+  public lessons: FormArray;
   public form: UntypedFormGroup;
+  public course: CoursesInterface;
   private readonly unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly toastService: HubsdToastService,
     private readonly service: CoursesService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly toastService: HubsdToastService,
     private readonly formBuilder: UntypedFormBuilder
   ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      name: ["", [Validators.required]],
-      description: ["", [Validators.required]],
-      duration: ["", [Validators.required]],
-      image: ["", [Validators.required]],
-      value: ["", [Validators.required]],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      duration: ['', [Validators.required]],
+      image: ['', [Validators.required]],
+      value: ['', [Validators.required]],
+      lessons: this.formBuilder.array([]),
     });
 
+    this.lessons = this.form.get('lessons') as FormArray;
+
     this.activatedRoute.paramMap.subscribe((params) => {
-      this.id = parseInt(params.get("id"));
+      this.id = parseInt(params.get('id'));
 
       if (this.id) {
         void this.service
@@ -46,6 +54,16 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
           .subscribe((res: CoursesInterface): void => {
             this.course = res;
             this.form.patchValue(res);
+            const lessons = res.lessons.map((lesson) => {
+              return this.formBuilder.group({
+                title: lesson.title,
+                pdfUrl: lesson.pdfUrl,
+              });
+            });
+            this.form.setControl('lessons', this.formBuilder.array(lessons));
+            this.course.lessons.forEach((lesson) => {
+              this.addLesson(lesson);
+            });
           });
       }
     });
@@ -59,6 +77,14 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
   handleSaveOrUpdate(): void {
     this.form.disable();
 
+    this.form.value.lessons = this.form.value.lessons.map((lesson, index) => {
+      return {
+        ...lesson,
+        order: index + 1,
+      };
+    });
+    this.form.value.value = parseFloat(this.form.value.value);
+
     if (this.id) {
       this.service
         .update(this.id, { ...this.form.value, id: this.id })
@@ -71,10 +97,14 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.toastService.handleMessage(res, null, { handleRequest: true });
-            this.router.navigateByUrl("cursos");
+            this.router.navigateByUrl('cursos');
           },
           error: (error) => {
-            this.toastService.handleMessage(error, "Não foi possível modificar o perfil de acesso.", { handleRequest: true });
+            this.toastService.handleMessage(
+              error,
+              'Não foi possível modificar o curso.',
+              { handleRequest: true }
+            );
           },
         });
     } else {
@@ -89,12 +119,34 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.toastService.handleMessage(res, null, { handleRequest: true });
-            this.router.navigateByUrl("cursos");
+            this.router.navigateByUrl('cursos');
           },
           error: (error) => {
-            this.toastService.handleMessage(error, "Não foi possível criar o perfil de acesso.", { handleRequest: true });
+            this.toastService.handleMessage(
+              error,
+              'Não foi possível criar o curso.',
+              { handleRequest: true }
+            );
           },
         });
     }
+  }
+
+  getLessons() {
+    return this.form.get('lessons') as FormArray;
+  }
+
+  addLesson(lesson?: CourseLessonsInterface): void {
+    const newLesson = this.formBuilder.group({
+      title: [lesson ? lesson.title : '', Validators.required],
+      pdfUrl: [lesson ? lesson.pdfUrl : '', Validators.required],
+    });
+    this.lessons.push(newLesson);
+    this.form.setControl('lessons', this.lessons);
+    this.form.get('lessons').updateValueAndValidity();
+  }
+
+  removeLesson(index: number) {
+    this.lessons.removeAt(index);
   }
 }

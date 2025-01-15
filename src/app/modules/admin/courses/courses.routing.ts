@@ -1,43 +1,44 @@
-import { Route } from "@angular/router";
+import { Route } from '@angular/router';
 
-import { CoursesListComponent } from "./components/courses-list/courses-list.component";
-import { CoursesFormComponent } from "./components/courses-form/courses-form.component";
-import { CoursesViewComponent } from "./components/courses-view/courses-view.component";
+import { CoursesListComponent } from './components/courses-list/courses-list.component';
+import { CoursesFormComponent } from './components/courses-form/courses-form.component';
+import { CoursesViewComponent } from './components/courses-view/courses-view.component';
+import { CoursesStepComponent } from './components/courses-step/courses-step.component';
 
 export const coursesRoutes: Route[] = [
   {
-    path: "",
+    path: '',
     component: CoursesListComponent,
     data: {
-      title: "Listar",
+      title: 'Listar',
     },
   },
   {
-    path: "criar",
+    path: 'criar',
     component: CoursesFormComponent,
     data: {
-      title: "Criar",
+      title: 'Criar',
     },
   },
   {
-    path: "editar/:id",
+    path: 'editar/:id',
     component: CoursesFormComponent,
     data: {
-      title: "Editar",
+      title: 'Editar',
     },
   },
   {
-    path: "visualizar/:id",
+    path: 'visualizar/:id',
     component: CoursesViewComponent,
     data: {
-      title: "Visualizar",
+      title: 'Visualizar',
     },
     children: [
       {
-        path: ":idStep",
-        component: CoursesViewComponent,
+        path: ':idStep',
+        component: CoursesStepComponent,
         data: {
-          title: "Aula",
+          title: 'Aula',
         },
       },
     ],

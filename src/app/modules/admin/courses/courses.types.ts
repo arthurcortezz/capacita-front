@@ -6,6 +6,7 @@ export interface CoursesInterface {
   value: number;
   status: string;
   duration: string;
+  lessons: CourseLessonsInterface[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,4 +18,13 @@ export interface CoursePaginatedInterface {
 
 export interface CourseFilterInterface {
   name?: string;
+}
+
+export interface CourseLessonsInterface {
+  id: number;
+  order: number;
+  title: string;
+  pdfUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

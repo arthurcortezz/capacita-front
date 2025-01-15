@@ -1,32 +1,39 @@
-import { Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
-import { SelectionModel } from "@angular/cdk/collections";
-import { HubsdToastService } from "@hubsd/services/toast";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { HubsdToastService } from '@hubsd/services/toast';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { ActionsService } from "../../actions.service";
-import { HubsdHeaderActionInterface } from "@hubsd/components/header";
-import { HubsdConfirmationService } from "@hubsd/services/confirmation";
-import { ActionFilterInterface, ActionPaginatedInterface } from "../../actions.types";
-import { HubsdTableInterface, HubsdTablePaginatorInterface, HubsdTableSortInterface } from "@hubsd/components/table";
+import { ActionsService } from '../../actions.service';
+import { HubsdHeaderActionInterface } from '@hubsd/components/header';
+import { HubsdConfirmationService } from '@hubsd/services/confirmation';
+import {
+  ActionFilterInterface,
+  ActionPaginatedInterface,
+} from '../../actions.types';
+import {
+  HubsdTableInterface,
+  HubsdTablePaginatorInterface,
+  HubsdTableSortInterface,
+} from '@hubsd/components/table';
 
 @Component({
-  selector: "actions-list",
-  templateUrl: "./actions-list.component.html",
+  selector: 'actions-list',
+  templateUrl: './actions-list.component.html',
 })
 export class ActionsListComponent implements OnInit, OnDestroy {
   public data: ActionPaginatedInterface = null;
   public config: HubsdTableInterface = {
-    title: "Ações",
+    title: 'Ações',
     headers: [
-      { name: "Nome", key: "name" },
-      { name: "Criado em", key: "createdAt" },
-      { name: "Modificado em", key: "updatedAt" },
+      { name: 'Nome', key: 'name' },
+      { name: 'Criado em', key: 'createdAt' },
+      { name: 'Modificado em', key: 'updatedAt' },
     ],
     content: [
-      { type: "field", key: "name" },
-      { type: "timestamp", key: "createdAt" },
-      { type: "timestamp", key: "updatedAt" },
+      { type: 'field', key: 'name' },
+      { type: 'timestamp', key: 'createdAt' },
+      { type: 'timestamp', key: 'updatedAt' },
     ],
     actions: true,
     searchable: true,
@@ -66,8 +73,6 @@ export class ActionsListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((res: { data: { actions: ActionPaginatedInterface } }) => {
         this.data = res.data.actions;
-        console.log("🚀 ~ ActionsListComponent ~ .subscribe ~ this.data:", this.data);
-        console.log("🚀 ~ ActionsListComponent ~ .subscribe ~ this.data:", this.config);
       });
   }
 
@@ -78,18 +83,18 @@ export class ActionsListComponent implements OnInit, OnDestroy {
 
   handleAction(data: HubsdHeaderActionInterface): void {
     switch (data.action) {
-      case "form":
+      case 'form':
         if (!data.id) {
-          this.router.navigateByUrl("acoes/criar");
+          this.router.navigateByUrl('acoes/criar');
         } else {
           this.router.navigateByUrl(`acoes/editar/${data.id}`);
         }
         break;
-      case "delete":
+      case 'delete':
         const dialogRef = this.confirmationService.open();
 
         dialogRef.afterClosed().subscribe((res) => {
-          if (res === "confirmed") {
+          if (res === 'confirmed') {
             this.service.delete(data.id).subscribe({
               next: (res) => {
                 this.getAll();
@@ -98,7 +103,11 @@ export class ActionsListComponent implements OnInit, OnDestroy {
                 });
               },
               error: (error) => {
-                this.toastService.handleMessage(error, "Não foi possível remover a ação.", { handleRequest: true });
+                this.toastService.handleMessage(
+                  error,
+                  'Não foi possível remover a ação.',
+                  { handleRequest: true }
+                );
               },
             });
           }
