@@ -13,11 +13,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { landingRoutes } from './landing.routing';
 import { LandingComponent } from './landing.component';
 import { SharedModule } from '../../shared/shared.module';
+import { MatDividerModule } from '@angular/material/divider';
 import { LandingHeroComponent } from './components/hero/hero.component';
 import { LandingAboutComponent } from './components/about/about.component';
 import { LandingFooterComponent } from './components/footer/footer.component';
 import { LandingSolutionsComponent } from './components/solutions/solutions.component';
-import { MatDivider, MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [

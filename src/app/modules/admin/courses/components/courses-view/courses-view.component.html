@@ -3,9 +3,9 @@
   <div class="flex w-full">
     <div
       *ngIf="hasActiveRoute"
-      class="bg-white rounded-lg shadow-lg p-6 w-full m-4 flex"
+      class="bg-white rounded-lg shadow-lg p-6 w-full m-4 lg:flex grid"
     >
-      <div class="w-1/2 grid justify-center">
+      <div class="w-full lg:w-1/2 grid justify-center">
         <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">
           Detalhes do Curso
         </h2>
@@ -43,7 +43,7 @@
       </div>
       <div
         *ngIf="course && course.lessons"
-        class="flex flex-col justify-start items-end w-1/2 gap-4"
+        class="flex flex-col justify-start items-end w-full lg:w-1/2 gap-4 mt-8 lg:mt-0"
       >
         <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center w-full">
           Conteúdo do curso

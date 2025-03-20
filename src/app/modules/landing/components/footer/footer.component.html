@@ -1,16 +1,35 @@
 <footer class="p-4 xl:p-16">
   <div class="flex xl:flex-row flex-col justify-evenly p-4 items-center">
-    <div class="flex flex-col items-center xl:items-start gap-y-0 xl:gap-y-4 xl:my-0">
-      <a class="block text-sm font-semibold leading-8 text-black dark:text-gray-50">SISTEMA</a>
-      <a (click)="scrollToAbout()" class="block text-sm font-semibold text-black dark:text-gray-50 leading-8 hover:underline cursor-pointer">Sobre</a>
+    <div
+      class="flex flex-col items-center xl:items-start gap-y-0 xl:gap-y-4 xl:my-0"
+    >
+      <a
+        class="block text-sm font-semibold leading-8 text-black dark:text-gray-50"
+        >SISTEMA</a
+      >
+      <a
+        (click)="scrollToAbout()"
+        class="block text-sm font-semibold text-black dark:text-gray-50 leading-8 hover:underline cursor-pointer"
+        >Sobre</a
+      >
     </div>
-    <div class="flex flex-col items-center xl:items-start gap-y-0 xl:gap-y-4 my-6 xl:my-0">
-      <a class="block text-sm font-semibold leading-8 text-black dark:text-gray-50">LINKS ÚTEIS</a>
-      <a href="#" target="_blank" class="block text-sm font-semibold text-black dark:text-gray-50 leading-8 hover:underline cursor-pointer"
+    <div
+      class="flex flex-col items-center xl:items-start gap-y-0 xl:gap-y-4 my-6 xl:my-0"
+    >
+      <a
+        class="block text-sm font-semibold leading-8 text-black dark:text-gray-50"
+        >LINKS ÚTEIS</a
+      >
+      <a
+        href="#"
+        target="_blank"
+        class="block text-sm font-semibold text-black dark:text-gray-50 leading-8 hover:underline cursor-pointer"
         >Link aqui</a
       >
     </div>
-    <div class="hidden xl:flex max-w-screen-xl flex-col justify-end space-y-2 mx-auto xl:mx-0">
+    <div
+      class="hidden xl:flex max-w-screen-xl flex-col justify-end space-y-2 mx-auto xl:mx-0"
+    >
       <p class="flex text-sm font-bold text-black dark:text-gray-50">
         <mat-icon [svgIcon]="'uil:world'"></mat-icon>
         <span class="ml-2">Brasil</span>
@@ -21,12 +40,14 @@
       </p>
     </div>
   </div>
-  <div class="flex flex-col items-center xl:hidden max-w-screen-xl mx-auto px-4">
-    <p class="flex text-sm font-bold text-black dark:text-gray-50 leading-7">
+  <div
+    class="flex flex-col items-center xl:hidden max-w-screen-xl mx-auto px-4 gap-4"
+  >
+    <p class="flex text-sm font-bold text-black leading-7 items-center">
       <mat-icon [svgIcon]="'uil:world'"></mat-icon>
       <span class="ml-2">Brasil</span>
     </p>
-    <p class="flex text-sm font-bold text-black dark:text-gray-50 leading-7">
+    <p class="flex text-sm font-bold text-black leading-7 items-center">
       <mat-icon [svgIcon]="'uil:copy'"></mat-icon>
       <span class="ml-2"> 2025 Capacita</span>
     </p>

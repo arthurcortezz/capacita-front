@@ -11,6 +11,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../../app/core/user/user.service';
+import { Location } from '@angular/common';
 
 interface BreadcrumbInterface {
   label: string;
@@ -36,6 +37,7 @@ export class HubsdHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
+    private readonly location: Location,
     private readonly userService: UserService,
     private readonly activatedRoute: ActivatedRoute
   ) {
@@ -94,5 +96,8 @@ export class HubsdHeaderComponent implements OnInit, OnDestroy {
 
       return this.createBreadcrumbs(child, url, breadcrumbs);
     }
+  }
+  goBack(): void {
+    this.location.back(); // Implementar a funcionalidade de voltar
   }
 }

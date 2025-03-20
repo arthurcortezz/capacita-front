@@ -41,7 +41,7 @@
       <div class="flex sm:hidden max-sm:ml-6 max-md:mr-6">
         <a
           class="inline-flex items-center -ml-1.5 md:ml-2 text-black dark:text-white font-medium"
-          [routerLink]="'./..'"
+          (click)="goBack()"
         >
           <mat-icon
             class="text-black dark:text-white"

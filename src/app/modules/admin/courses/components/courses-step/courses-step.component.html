@@ -4,10 +4,16 @@
     [src]="sanitizedPdfUrl"
     [render-text]="true"
     [original-size]="false"
+    class="w-full md:w-[80%]"
     style="width: 80%; height: 90%"
   ></pdf-viewer>
 
-  <video width="80%" height="80%" controls *ngIf="lesson.type === 'video'">
+  <video
+    class="w-full md:w-[80%]"
+    width="80%"
+    controls
+    *ngIf="lesson.type === 'video'"
+  >
     <source [src]="lesson.pdfUrl" type="video/mp4" />
     Seu navegador não suporta vídeos.
   </video>
