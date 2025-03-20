@@ -2,10 +2,13 @@
   <hubsd-header></hubsd-header>
   <div class="flex w-full">
     <div
-      class="bg-white rounded-lg shadow-lg p-6 w-full m-4 grid justify-center"
+      *ngIf="hasActiveRoute"
+      class="bg-white rounded-lg shadow-lg p-6 w-full m-4 flex"
     >
-      <h2 class="text-2xl font-bold text-gray-700 mb-4">Detalhes do Curso</h2>
-      <div class="flex flex-col space-y-3">
+      <div class="w-1/2 grid justify-center">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">
+          Detalhes do Curso
+        </h2>
         <div *ngIf="course?.image" class="justify-center flex">
           <img
             [src]="course?.image"
@@ -37,23 +40,25 @@
             {{ course?.duration || "Duração não disponível" }} minutos
           </p>
         </div>
-        <div *ngIf="course && course.lessons">
-          <h2 class="text-2xl font-bold text-gray-700 mb-4">
-            Conteúdo do curso
-          </h2>
-          <div
-            *ngFor="let lesson of course.lessons"
-            class="w-full rounded-lg shadow-lg p-6 bg-white justify-between flex items-center"
+      </div>
+      <div
+        *ngIf="course && course.lessons"
+        class="flex flex-col justify-start items-end w-1/2 gap-4"
+      >
+        <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center w-full">
+          Conteúdo do curso
+        </h2>
+        <div
+          *ngFor="let lesson of course.lessons"
+          class="cursor-pointer rounded-lg shadow-lg p-6 bg-white justify-between flex items-center w-full"
+          (click)="courseInit(lesson)"
+        >
+          <p class="text-lg text-gray-700">
+            {{ lesson.title }}
+          </p>
+          <mat-icon class="p-4 rounded-full hover:bg-primary hover:text-white"
+            >chevron_right</mat-icon
           >
-            <p class="text-lg text-gray-700">
-              {{ lesson.title }}
-            </p>
-            <mat-icon
-              class="cursor-pointer hover:bg-green-500 p-4 rounded-full"
-              (click)="courseInit(lesson)"
-              >chevron_right</mat-icon
-            >
-          </div>
         </div>
       </div>
     </div>

@@ -1,3 +1,14 @@
-<div class="pt-2" *ngIf="sanitizedPdfUrl">
-  <iframe [src]="sanitizedPdfUrl" width="100%" height="500px"></iframe>
+<div class="p-2 w-full h-[700px] flex justify-center" *ngIf="sanitizedPdfUrl">
+  <pdf-viewer
+    *ngIf="lesson.type === 'pdf'"
+    [src]="sanitizedPdfUrl"
+    [render-text]="true"
+    [original-size]="false"
+    style="width: 80%; height: 90%"
+  ></pdf-viewer>
+
+  <video width="80%" height="80%" controls *ngIf="lesson.type === 'video'">
+    <source [src]="lesson.pdfUrl" type="video/mp4" />
+    Seu navegador não suporta vídeos.
+  </video>
 </div>

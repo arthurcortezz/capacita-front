@@ -75,7 +75,21 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="w-full">
-              <mat-label class="font-bold">Link para o PDF da aula</mat-label>
+              <mat-label class="font-bold">Tipo da aula</mat-label>
+              <mat-select
+                class="min-w-40"
+                formControlName="type"
+                placeholder="Tipo da aula"
+              >
+                <mat-option value="pdf">Arquivo PDF</mat-option>
+                <mat-option value="video">Aula em vídeo</mat-option>
+              </mat-select>
+              <mat-error *ngIf="lesson.get('type').hasError('required')">
+                O tipo é obrigatório.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="w-full">
+              <mat-label class="font-bold">Link da aula</mat-label>
               <input
                 placeholder="Digite a URL da aula"
                 formControlName="pdfUrl"

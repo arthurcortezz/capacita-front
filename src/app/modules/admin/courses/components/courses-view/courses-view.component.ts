@@ -1,23 +1,9 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { OnInit, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { CoursesService } from '../../courses.service';
-import { HubsdToastService } from '@hubsd/services/toast';
-import { HubsdHeaderActionInterface } from '@hubsd/components/header';
-import { HubsdConfirmationService } from '@hubsd/services/confirmation';
-import {
-  CourseFilterInterface,
-  CourseLessonsInterface,
-  CoursePaginatedInterface,
-  CoursesInterface,
-} from '../../courses.types';
-import {
-  HubsdTableInterface,
-  HubsdTablePaginatorInterface,
-  HubsdTableSortInterface,
-} from '@hubsd/components/table';
+import { CoursesInterface, CourseLessonsInterface } from '../../courses.types';
 
 @Component({
   selector: 'courses-view',
@@ -27,18 +13,24 @@ import {
 export class CoursesViewComponent implements OnInit, OnDestroy {
   public id: number;
   public course: CoursesInterface;
+  public hasActiveRoute: boolean = false;
   private readonly unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private readonly router: Router,
     private readonly service: CoursesService,
-    private readonly toastService: HubsdToastService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly confirmationService: HubsdConfirmationService
-  ) {}
+    private readonly activatedRoute: ActivatedRoute
+  ) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.verifyActiveRoute();
+      });
+  }
 
   ngOnInit(): void {
     this.getCourse();
+    this.verifyActiveRoute();
   }
 
   getCourse(): void {
@@ -65,5 +57,17 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
     this.router.navigate([`/cursos/visualizar/${this.id}/${lesson.id}`]);
   }
 
-  handleAction(data: HubsdHeaderActionInterface): void {}
+  verifyActiveRoute(): void {
+    const url = this.router.url;
+    const regexExact = /^\/cursos\/visualizar\/\d+$/;
+    const regexSub = /^\/cursos\/visualizar\/\d+\/\d+$/;
+
+    if (regexExact.test(url)) {
+      this.hasActiveRoute = true;
+    } else if (regexSub.test(url)) {
+      this.hasActiveRoute = false;
+    } else {
+      this.hasActiveRoute = false;
+    }
+  }
 }

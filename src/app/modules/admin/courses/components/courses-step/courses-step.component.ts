@@ -37,8 +37,7 @@ export class CoursesStepComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribeAll))
           .subscribe((res: CourseLessonsInterface): void => {
             this.lesson = res;
-            this.sanitizedPdfUrl =
-              this.sanitizer.bypassSecurityTrustResourceUrl(res.pdfUrl);
+            this.sanitizedPdfUrl = `https://cors-anywhere.herokuapp.com/${res.pdfUrl}`;
           });
       }
     });

@@ -1,47 +1,4 @@
-<div *ngIf="info">
-  <div class="flex p-4">
-    <div
-      class="flex justify-center items-center ml-1 whitespace-nowrap"
-      *ngFor="let item of items; let last = last"
-    >
-      <a
-        [routerLink]="item.url"
-        [ngClass]="last && 'text-primary-dark font-bold'"
-        class="flex"
-        >{{ item.label }}</a
-      >
-      <span class="ml-1" *ngIf="!last">
-        <mat-icon
-          class="flex"
-          [ngClass]="last && 'text-primary-dark font-bold'"
-          [svgIcon]="'mat_outline:chevron_right'"
-        ></mat-icon>
-      </span>
-    </div>
-  </div>
-  <div class="w-full flex flex-col items-center pt-4">
-    <span class="text-lg"> Novo aplicativo </span>
-    <span class="text-md mb-4 max-w-100 text-center">
-      Abaixo estão as páginas clonadas por você. Escolha uma para visualizar ou
-      crie uma nova página.
-    </span>
-    <div
-      *ngIf="buttonActionTitle && creatable"
-      class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
-    >
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="actionListener.emit({ action: 'form', id: null })"
-      >
-        <mat-icon [svgIcon]="'mat_outline:add'"></mat-icon>
-        <span class="ml-1">{{ buttonActionTitle }}</span>
-      </button>
-    </div>
-  </div>
-</div>
 <div
-  *ngIf="!info"
   class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-0 py-6 sm:px-6 dark:bg-transparent"
 >
   <div class="flex-1 min-w-0">

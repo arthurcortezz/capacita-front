@@ -1,9 +1,25 @@
-<header class="bg-black bg-opacity-40 bg-blend-multiply fixed w-full top-0 z-50">
-  <nav class="w-full md:mx-auto flex items-center p-6 lg:px-18" [ngClass]="hideLogo ? 'justify-end' : 'justify-evenly'" aria-label="Global">
-    <button *ngIf="!hideLogo" (click)="clickBack()" class="flex items-center bg-none light:bg-white rounded-md">
-      <mat-icon class="w-fit h-fit max-w-4 mr-4" [svgIcon]="'mat_outline:chevron_left'"></mat-icon>
-      <div class="w-26 m-auto">
-        <img src="../../../../assets/images/logo/capacita.png" alt="Logo Capacita" />
+<header
+  class="bg-black bg-opacity-40 bg-blend-multiply fixed w-full top-0 z-50"
+>
+  <nav
+    class="w-full md:mx-auto flex items-center p-6 lg:px-18"
+    [ngClass]="hideLogo ? 'justify-end' : 'justify-evenly'"
+    aria-label="Global"
+  >
+    <button
+      *ngIf="!hideLogo"
+      (click)="clickBack()"
+      class="flex items-center bg-none light:bg-white rounded-md"
+    >
+      <mat-icon
+        class="w-fit h-fit max-w-4 mr-4"
+        [svgIcon]="'mat_outline:chevron_left'"
+      ></mat-icon>
+      <div class="w-36 m-auto">
+        <img
+          src="../../../../assets/images/logo/capacita.png"
+          alt="Logo Capacita"
+        />
       </div>
     </button>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -15,7 +31,11 @@
       >
         <span> Login <span aria-hidden="true">&rarr;</span> </span>
       </button>
-      <button class="text-sm font-semibold leading-6 px-8 text-gray-50 bg-zinc-800 mr-4 rounded-md" mat-flat-button [routerLink]="['/registrar']">
+      <button
+        class="text-sm font-semibold leading-6 px-8 text-gray-50 bg-zinc-800 mr-4 rounded-md"
+        mat-flat-button
+        [routerLink]="['/registrar']"
+      >
         <span> Cadastro <span aria-hidden="true">&rarr;</span> </span>
       </button>
     </div>

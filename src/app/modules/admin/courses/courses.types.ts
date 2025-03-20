@@ -22,6 +22,7 @@ export interface CourseFilterInterface {
 
 export interface CourseLessonsInterface {
   id: number;
+  type: string;
   order: number;
   title: string;
   pdfUrl: string;

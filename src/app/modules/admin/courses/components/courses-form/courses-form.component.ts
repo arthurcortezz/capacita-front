@@ -56,6 +56,7 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
             this.form.patchValue(res);
             const lessons = res.lessons.map((lesson) => {
               return this.formBuilder.group({
+                type: lesson.type,
                 title: lesson.title,
                 pdfUrl: lesson.pdfUrl,
               });
@@ -139,11 +140,16 @@ export class CoursesFormComponent implements OnInit, OnDestroy {
   addLesson(lesson?: CourseLessonsInterface): void {
     const newLesson = this.formBuilder.group({
       title: [lesson ? lesson.title : '', Validators.required],
+      type: [lesson ? lesson.type : '', Validators.required],
       pdfUrl: [lesson ? lesson.pdfUrl : '', Validators.required],
     });
     this.lessons.push(newLesson);
     this.form.setControl('lessons', this.lessons);
     this.form.get('lessons').updateValueAndValidity();
+    console.log(
+      "🚀 ~ CoursesFormComponent ~ addLesson ~ this.form.get('lessons'):",
+      this.form.get('lessons')
+    );
   }
 
   removeLesson(index: number) {
